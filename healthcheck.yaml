@@ -1,0 +1,23 @@
+---
+apiVersion: kuberhealthy.github.io/v2
+kind: HealthCheck
+metadata:
+  name: http-content-check
+  namespace: kuberhealthy
+spec:
+  runInterval: 5m
+  timeout: 5m
+  podSpec:
+    spec:
+      containers:
+        - name: http-content-check
+          image: kuberhealthy/http-content-check:sha-<short-sha>
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TARGET_URL
+              value: "https://example.com"
+            - name: TARGET_STRING
+              value: "example"
+            - name: TIMEOUT_DURATION
+              value: "30s"
+      restartPolicy: Never
