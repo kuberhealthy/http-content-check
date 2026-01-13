@@ -1,46 +1,23 @@
-# http-content-check
+# Http Content Check
 
-The `http-content-check` validates that a target URL responds with a body containing a configured string. If the request succeeds and the string is present, the check reports success to Kuberhealthy. Otherwise, it reports failure.
+Kuberhealthy's HTTP content check
 
-## Configuration
+## What it is
+This repository builds the container image used by Kuberhealthy to run the http-content-check check.
 
-Set these environment variables in the `HealthCheck` spec:
+## Image
+- `docker.io/kuberhealthy/http-content-check`
+- Tags: short git SHA for `main` pushes and `vX.Y.Z` for releases.
 
-- `TARGET_URL` (required): URL to request.
-- `TARGET_STRING` (required): string to search for in the response body.
-- `TIMEOUT_DURATION` (required): Go duration for the HTTP timeout (for example, `30s`).
+## Quick start
+- Apply the example manifest: `kubectl apply -f healthcheck.yaml`
+- Edit the manifest to set any required inputs for your environment.
 
-## Build
+## Build locally
+- `docker build -f ./Containerfile -t kuberhealthy/http-content-check:dev .`
 
-- `just build` builds the container image locally.
-- `just test` runs unit tests.
-- `just binary` builds the binary in `bin/`.
+## Contributing
+Issues and PRs are welcome. Please keep changes focused and add a short README update when behavior changes.
 
-## Example HealthCheck
-
-Apply the example below or the provided `healthcheck.yaml`:
-
-```yaml
-apiVersion: kuberhealthy.github.io/v2
-kind: HealthCheck
-metadata:
-  name: http-content-check
-  namespace: kuberhealthy
-spec:
-  runInterval: 5m
-  timeout: 5m
-  podSpec:
-    spec:
-      containers:
-        - name: http-content-check
-          image: kuberhealthy/http-content-check:sha-<short-sha>
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: TARGET_URL
-              value: "https://example.com"
-            - name: TARGET_STRING
-              value: "example"
-            - name: TIMEOUT_DURATION
-              value: "30s"
-      restartPolicy: Never
-```
+## License
+See `LICENSE`.
