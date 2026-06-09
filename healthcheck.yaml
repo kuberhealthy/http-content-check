@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: http-content-check
-          image: kuberhealthy/http-content-check:sha-<short-sha>
+          image: ghcr.io/kuberhealthy/http-content-check:v0.1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: TARGET_URL
